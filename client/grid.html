@@ -1,0 +1,176 @@
+<template name="grid">
+	{{#if equals mode 'day'}}
+		{{#each resas}}
+			{{>Template.dynamic template="resa" data=resaData}}
+		{{/each}}
+		{{>tempResa}}
+	<table id="day" class="table table-fixed table-bordered" install={{installation.name}}>
+			{{#each hours}}
+				<tr>
+					<td class="hours">{{this}}h</td>
+					{{#each loopCount ../installation.col}}
+					<td hours="{{..}}:00" col="{{this.index}}" day="{{../../dateRange}}">&nbsp;</td>
+					{{/each}}
+				</tr>
+				<tr>
+					<td class="hours"></td>
+					{{#each loopCount ../installation.col}}
+					<td hours="{{..}}:30" col="{{this.index}}" day="{{../../dateRange}}">&nbsp;</td>
+					{{/each}}
+				</tr>
+			{{/each}}
+		</table>
+	{{/if}}
+
+	{{#if equals mode 'week'}}
+		{{#each resas}}
+			{{>Template.dynamic template="resa" data=resaData}}
+		{{/each}}
+		{{>tempResa}}
+		<table id="week" class="table table-fixed table-bordered" install={{installation.name}}>
+			<tr>
+				<td class="hours"></td>
+				{{#each dateRange}}
+				<td rel="{{this.day}}" class="toDay head" colspan="{{../installation.col}}"><a>{{this.timeString}}</a></td>
+				{{/each}}
+			</tr>
+			{{#each hours}}
+				<tr class="start">
+					<td class="hours">{{this}}h</td>
+					{{#each ../dateRange}}
+						{{#each loopCount ../../installation.col}}
+						<td class="{{this.end}}" col="{{this.index}}" day="{{../day}}" hours="{{../..}}:00">&nbsp;</td>
+						{{/each}}
+					{{/each}}
+				</tr>
+				<tr>
+					<td class="hours"></td>
+					{{#each ../dateRange}}
+						{{#each loopCount ../../installation.col}}
+						<td class="{{this.end}}" col="{{this.index}}" day="{{../day}}" hours="{{../..}}:30">&nbsp;</td>
+						{{/each}}
+					{{/each}}
+				</tr>
+			{{/each}}
+	</table>
+	{{/if}}
+	
+	{{#if equals mode 'month'}}
+		{{>tempResa}}
+	<table id="month" class="table table-fixed table-bordered" install={{installation.name}}>
+			<tr>
+				{{#each weekDays}}
+				<td>{{this}}</td>
+				{{/each}}
+			</tr>	
+				{{#each dateRange}}
+					<tr>
+					{{#each this}}
+					<td>
+						<div class="day-title toDay" rel="{{date}}"><a>{{this.day}}</a></div>
+						<div class="month-content" date="{{date}}">				
+							{{#each resas date}}
+								{{>Template.dynamic template="resa" data=resaData}}
+							{{/each}}
+						</div>
+					</td>
+					{{/each}}
+					</tr>
+				{{/each}}
+		</table>
+	{{/if}}
+</template>
+
+<template name="resa">
+	<div id="resa-{{_id}}" class="resa resa-{{mode}} hidden" colStart="{{colStart}}" colEnd="{{colEnd}}" startDate="{{start}}" endDate="{{end}}">
+		{{rangeHours}} {{group}}	
+	</div>
+</template>
+
+<template name="tempResa">
+	<div id="resa-temp" class="resa hidden">
+		Nouvelle Réservation
+	</div>
+</template>
+
+<template name="resaForm">
+	<div id="resaForm" class="modal fade">
+	<div class="form-content modal-content">
+		<form class="form" role="form">
+			<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">
+						{{#if _id}}
+							Reservation {{group}} pour {{installation.name}}
+						{{else}}
+							Nouvelle Réservation
+						{{/if}}
+					</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="groups">Groupe : </label>
+					<select name="groups">
+						{{#each groups}}
+						<option value="{{name}}" {{selected}}>{{name}}</option>
+						{{/each}}
+					</select>
+					{{#if _id}}
+						<input type="hidden" name="id" value="{{_id}}">
+					{{/if}}
+					{{#if serie}}
+						<input type="hidden" name="serie" value="{{serie}}">
+					{{/if}}
+				</div>
+				<div class="form-group">
+					<label for="start">Date de début : </label>
+					<input type="start" class="form-control" id="start" name="start" placeholder="{{start}}" value="{{start}}" disabled>
+					<label for="end">Date de fin : </label>
+					<input type="end" class="form-control" id="end" name="end" placeholder="{{end}}" value="{{end}}" disabled>
+				</div>
+				<div class="form-group">
+					<label for="colStart">Colonne de début : </label>
+					<input type="colStart" class="form-control" id="colStart" name="colStart" placeholder="{{colStart}}" value="{{colStart}}" disabled>
+					<label for="colEnd">Colonne de fin : </label>
+					<input type="colEnd" class="form-control" id="colEnd" name="colEnd" placeholder="{{colEnd}}" value="{{colEnd}}" disabled>
+				</div>
+				<div class="form-group">
+					<label for="install">Installation : </label>
+					<input type="install" class="form-control" id="install" name="install" placeholder={{install}} value="{{install}}" disabled>
+				</div>
+				{{#if _id}}
+					<div class="form-group">
+						<label for="rec">Recurrence : </label>
+						<select id="recurrence" name="recurrence" class="form-control">
+							<option value='false' {{recSelected 'false'}}>Pas de récurrence</option>
+							<option value="day" {{recSelected 'day'}}>Tous les jours</option>
+							<option value="week" {{recSelected 'week'}}>Toutes les semaines</option>
+							<option value="month" {{recSelected 'month'}}>Tous les mois</option>
+						</select>
+
+						<div id="fieldEndRec" class="form-group">
+							<label for="endRec">Fin de récurrence </label>
+							<div class="input-group picker">
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<input name="endRec" id="endRec" class="set-due-date form-control" type="text" value="{{endRec}}"/>
+							</div>
+						</div>
+					</div>
+				{{/if}}
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Retour</button>
+					{{#if _id}}
+						<button type="button" id="deleteResa" rel="{{_id}}" class="btn btn-danger btn-ok" data-dismiss='modal'>Effacer</button>
+						{{#if serie}}
+							<button type="button" id="deleteGroupResa" rel="{{serie}}" class="btn btn-danger btn-ok" data-dismiss='modal'>Effacer la série</button>
+						{{/if}}
+						<input type="submit" id="doResa" class="btn btn-primary btn-ok" value="Mettre à jour">
+					{{else}}
+						<input type="submit" id="doResa" class="btn btn-primary btn-ok" value="Réserver">
+					{{/if}}
+				</div>
+			</div>
+			</form>
+		</div>
+	</div>
+</template>

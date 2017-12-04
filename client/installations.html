@@ -1,0 +1,39 @@
+<template name="installations">
+<div class="container-fluid">
+	<h2>Installations</h2>
+	<table class="table">
+		<thead><tr>
+			<th>Nom</th>
+			<th>Colonnes</th>
+			<th># Réservations</th>
+			<th>Effacer</th>
+		</tr></thead>
+		{{#each list}}
+			<tbody><tr>
+				<td>{{name}}</td>
+				<td>{{col}}</td>
+				<td><span class="badge">{{count name}}</span></td>
+				<td><i rel="{{_id}}" class="trash fa fa-trash-o" aria-hidden="true"></i></td>
+			</tr></tbody>
+		{{/each}}
+	</table>
+	<form class="form-inline">
+		<div class="form-group">
+			<label for="name">Nom</label>
+			<input type="text" class="form-control" id="name">
+		</div>
+		<div class="form-group">
+			<label for="col">Colonnes</label>
+			<select id="col" class="form-control">
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+				<option>6</option>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-primary">Ajouter une installation</button>
+	</form>
+</div>
+</template>

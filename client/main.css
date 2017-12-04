@@ -1,0 +1,135 @@
+/* CSS declarations go here */
+body {
+	padding-top : 30px;
+}
+
+body.home {
+	padding-top: 70px;
+}
+
+#nav {
+	padding-top:50px;
+	z-index: 1029;
+}
+
+table#month {
+	table-layout : fixed;
+}
+
+td.hours {
+  width: 50px;
+  border-left : 1px solid #aaa;
+  border-right: 1px solid #aaa;
+  border-top : 1px dotted #aaa;
+  border-bottom : 1px dotted #aaa;
+  color: #468;
+  text-align: right;
+  padding: 3px;
+  background-color: #e8eef7;
+  font-size : 14px;
+  user-select: none;
+  cursor : default;
+}
+
+
+#grid tr td {
+	height : 25px;
+  border-top : 1px dotted #aaa;
+  border-bottom : 1px dotted #aaa;
+  border-right : 1px dotted #aaa;
+  border-left : 1px dotted #aaa;
+  background-color : #FFF;
+	text-align : center;
+	user-select: none;
+}
+
+#grid #week td, #grid #day td {
+	cursor : cell;
+}
+
+#grid td.end {
+	border-right : 1px solid #aaa;
+}
+
+tr td a {
+	cursor : pointer;
+}
+
+td.toDay {
+	cursor : default;
+}
+
+tr.start {
+  border-top : 1px solid #aaa;
+}
+
+td.end, td.head{
+	border-right : 1px solid #aaa;
+}
+
+.day-title {
+  text-align : right;
+  padding-right : 5px;
+  padding-top : 2px;
+  color : #777;
+  background-color: #e8eef7;
+}
+
+.month-content {
+	height : 60px;
+}
+
+.resa {
+  user-select: none;
+  background: repeating-linear-gradient(
+    45deg,
+    #606dbc,
+    #606dbc 10px,
+    #465298 10px,
+    #465298 20px
+  );
+	border-bottom : 1px solid #EEE;
+  font-weight : bold;
+  text-align : center;
+  /*background-color : #465298;*/
+  opacity : 0.8;
+  color: #FFF;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align : middle;
+	cursor : pointer;
+	white-space : nowrap;
+	text-shadow: 0px 0px 10px #000;
+}
+
+.resa-week, .resa-day, #resa-temp {
+	position : absolute;
+}
+
+.wrapper::-webkit-scrollbar { width: 0 !important }
+
+#start, #end, #colStart, #colEnd, #install {
+  display: inline;
+}
+  
+#start, #end, #install {
+  width : 30%;
+} 
+
+#colStart, #colEnd {
+  width : 7%;
+}
+
+.modal {
+	margin : 60px;
+}
+
+.unclickable {
+	cursor : default !important;
+}
+
+.trash {
+	cursor : pointer;
+}
+
+.datepicker{z-index:10151 !important;}
